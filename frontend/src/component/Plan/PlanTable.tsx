@@ -3,7 +3,7 @@ import PlanTableNav from "./PlanTableNav";
 
 function PlanTable({accounts}:PlanTableProps){
     return <>
-            <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg max-h-[55dvh]">
+            <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg"> {/*max-h-[55dvh]*/}
                 <table className="relative w-full text-sm text-left text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
                         <tr>
