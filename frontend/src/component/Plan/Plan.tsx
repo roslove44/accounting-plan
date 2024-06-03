@@ -5,6 +5,9 @@ import PlanTypeBox from "./PlanTypeBox";
 import PlanTable from "./PlanTable";
 import Account from "../../entity/Account";
 import filterDataInBatchesOf from "../../utils/FilterLogic";
+import SearchState from "../../entity/SearchState";
+import getAccountsState from "../../utils/GetAccountsState";
+import PlanTableNav from "./PlanTableNav";
 
 function Plan () {
     const accounts: Account[] = [
@@ -29,19 +32,28 @@ function Plan () {
         { code: 505, name: "Insurance Expense", keywords: "premiums, coverage" },
         { code: 506, name: "Advertising Expense", keywords: "marketing, promotions" },
     ];
-    const [search, setSearch] = useState("");
-    const [batchSize, setBatchSize] = useState(10);
+
+    const [search, setSearch] = useState<SearchState>({ state: false, data: "" });
+    const [batchSize, setBatchSize] = useState(2);
+
+    const handleResearch = (e:string) => {
+        setSearch({ state: !!e.trim(), data: e })
+    }
     
     const accountToDisplay = filterDataInBatchesOf(accounts, batchSize);
+
+    const accountsState = getAccountsState(accounts, accountToDisplay, batchSize, search.state);
+
     return <>
         <div className="container mx-auto mt-10 px-10 lg:px-32 xl:px-64">
             <div className="block p-6 bg-white border border-slate-200 rounded-lg shadow space-y-5">
                 <PlanTypeBox/>
                 <div className="w-full flex flex-col-reverse gap-2 sm:flex-row sm:gap-0 justify-between">
                     <ShowRangeSelect onSelect={setBatchSize}/>
-                    <SearchBar search={search} onChange={setSearch}></SearchBar>
+                    <SearchBar search={search.data} onChange={handleResearch}></SearchBar>
                 </div>
                 <PlanTable accounts={accountToDisplay}/>
+                <PlanTableNav {...accountsState}/>
             </div>
         </div>
     </>

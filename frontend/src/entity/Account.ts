@@ -4,4 +4,11 @@ type Account = {
     keywords?: string;  // Optionnel
 };
 
+export type AccountState = {
+        totalLength: number,
+        filteredLength: number,
+        batchSize : number,
+        searchState : boolean,
+};
+
 export default Account;

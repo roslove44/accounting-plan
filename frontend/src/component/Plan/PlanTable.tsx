@@ -1,5 +1,4 @@
 import Account from "../../entity/Account";
-import PlanTableNav from "./PlanTableNav";
 
 function PlanTable({accounts}:PlanTableProps){
     return <>
@@ -20,7 +19,6 @@ function PlanTable({accounts}:PlanTableProps){
                     </tbody>
                 </table>
             </div>
-            <PlanTableNav/>
     </>
 }
 
@@ -42,11 +40,5 @@ function AccountRow(account:Account) {
 type PlanTableProps = {
     accounts: Account[];
 };
-
-// type AccountRowProps = {
-//     code: number;
-//     name: string;
-//     keywords?: string;  // Optionnel
-// }
 
 export default PlanTable;
