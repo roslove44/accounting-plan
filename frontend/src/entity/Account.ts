@@ -9,6 +9,7 @@ export type AccountState = {
         filteredLength: number,
         batchSize : number,
         searchState : boolean,
+        totalPages: number,
 };
 
 export default Account;

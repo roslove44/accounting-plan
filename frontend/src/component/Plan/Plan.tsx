@@ -43,6 +43,8 @@ function Plan () {
     const accountToDisplay = filterDataInBatchesOf(accounts, batchSize);
 
     const accountsState = getAccountsState(accounts, accountToDisplay, batchSize, search.state);
+    console.log(accountsState);
+    
 
     return <>
         <div className="container mx-auto mt-10 px-10 lg:px-32 xl:px-64">

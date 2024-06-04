@@ -14,7 +14,7 @@ function getAccountsState (unfilteredAccounts: Account[], filteredAccounts: Acco
         accountLength = state.filteredLength;
     }
 
-    const totalPages = accountLength / batchSize;
+    const totalPages = Math.ceil(accountLength / batchSize);
 
     state.totalPages = totalPages;
 

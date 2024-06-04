@@ -1,11 +1,13 @@
-function generatePagination(currentPage:number, totalPages:number):number[] {
+function generatePagination(totalPages:number, currentPage:number):number[] {
     const maxPagesToShowOnEachSide = 3;
     const maxPagesToShowOnLeft = currentPage - 1;
-    // const maxPagesToShowOnRight = totalPages- currentPage;
+    const maxPagesToShowOnRight = totalPages- currentPage;
 
     let restOnLeft = maxPagesToShowOnLeft - maxPagesToShowOnEachSide;
     const restOnRight = (maxPagesToShowOnEachSide*2) - maxPagesToShowOnLeft;
     restOnLeft = Math.max(restOnLeft, 0);
+    console.log(totalPages, maxPagesToShowOnLeft, maxPagesToShowOnRight);
+    
 
     const leftPagination = []
     for (let i = currentPage; i > restOnLeft ; i--) {
