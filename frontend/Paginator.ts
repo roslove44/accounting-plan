@@ -34,11 +34,11 @@ function generatePagination(totalPages: number, currentPage: number) {
     )
 
     if (restLeft > 0) {
-      for (let i = currentPage-((maxPagesToShowOnEachSide*2 + 1)-maxShowablePagesOnRight); i < currentPage ; i++) {
+      for (let i = currentPage-((maxPagesToShowOnEachSide*2)-maxShowablePagesOnRight); i < currentPage ; i++) {
         paginate.push(i);        
       }
 
-      for (let i = currentPage; i < currentPage+maxShowablePagesOnRight; i++) {
+      for (let i = currentPage; i <= currentPage+maxShowablePagesOnRight; i++) {
         paginate.push(i);    
       }
 
@@ -62,4 +62,5 @@ function generatePagination(totalPages: number, currentPage: number) {
   return [paginate];
 }
 
+console.log(generatePagination(8, 8));
 console.log(generatePagination(8, 7));
