@@ -50,7 +50,7 @@ function generatePagination(totalPages: number, currentPage: number) {
         paginate.push(i);        
       }
 
-      for (let i = currentPage; i < currentPage+restRight; i++) {
+      for (let i = currentPage; i < currentPage+((maxPagesToShowOnEachSide*2)-maxShowablePagesOnLeft); i++) {
         paginate.push(i+1);    
       }
       
@@ -62,5 +62,7 @@ function generatePagination(totalPages: number, currentPage: number) {
   return [paginate];
 }
 
-console.log(generatePagination(8, 8));
-console.log(generatePagination(8, 7));
+console.log(generatePagination(8, 1));
+console.log(generatePagination(8, 2));
+console.log(generatePagination(8, 3));
+console.log(generatePagination(8, 4));
