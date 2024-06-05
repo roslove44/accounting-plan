@@ -1,30 +1,96 @@
-function generatePagination(totalPages:number, currentPage:number):number[] {
-    const maxPagesToShowOnEachSide = 3;
-    const maxPagesToShowOnLeft = currentPage - 1;
-    const maxPagesToShowOnRight = totalPages- currentPage;
+function generateNumeredPagination(totalPages: number, currentPage: number):number[] {
+  const paginate : number[] = [];
+  const maxPagesToShowOnEachSide = 3;
+  const maxShowablePagesOnLeft = currentPage - 1;
+  const maxShowablePagesOnRight = totalPages - currentPage;
 
-    let restOnLeft = maxPagesToShowOnLeft - maxPagesToShowOnEachSide;
-    const restOnRight = (maxPagesToShowOnEachSide*2) - maxPagesToShowOnLeft;
-    restOnLeft = Math.max(restOnLeft, 0);
-    console.log(totalPages, maxPagesToShowOnLeft, maxPagesToShowOnRight);
-    
+  let restLeft = maxShowablePagesOnLeft - maxPagesToShowOnEachSide;
+  let restRight = maxShowablePagesOnRight - maxPagesToShowOnEachSide;
+  const is_restToFill = (restLeft < 0 || restRight < 0);
 
-    const leftPagination = []
-    for (let i = currentPage; i > restOnLeft ; i--) {
-        leftPagination.push(i)
+  if(totalPages <= (maxPagesToShowOnEachSide*2 + 1)) {
+      for (let i = 0; i < totalPages; i++) {
+        paginate.push(i + 1);
+      }
+      return paginate;
+  }
+
+  // On cherche le côté défaillant : qui sera le côté avec un rest inférieur ou égale à 0
+  // Et on ajoute le rest à afficher pour atteindre le maxPagesToShowOnEachSide du côté vers le côté opposé
+  if (is_restToFill) {
+    if(restLeft<=0) {restRight = restRight - restLeft; restLeft=0} // -*-=+ on ajoute donc 
+    if(restRight<=0) {restLeft = restLeft - restRight; restRight=0} // -*-=+ on ajoute donc 
+
+    if (restLeft > 0) {
+      for (let i = currentPage-((maxPagesToShowOnEachSide*2)-maxShowablePagesOnRight); i < currentPage ; i++) {
+        paginate.push(i);        
+      }
+
+      for (let i = currentPage; i <= currentPage+maxShowablePagesOnRight; i++) {
+        paginate.push(i);    
+      }
+
+      return paginate;
     }
-    leftPagination.reverse();
 
-    const rightPagination = [];
-    for (let j = (currentPage +1); j < (currentPage + restOnRight + restOnLeft +1); j++) {
-        rightPagination.push(j)            
+    if (restRight > 0) {
+      for (let i = currentPage-maxShowablePagesOnLeft; i <= currentPage ; i++) {
+        paginate.push(i);        
+      }
+
+      for (let i = currentPage; i < currentPage+((maxPagesToShowOnEachSide*2)-maxShowablePagesOnLeft); i++) {
+        paginate.push(i+1);    
+      }
+      
+      return paginate;
     }
+  }
 
-    const pagination = leftPagination.concat(rightPagination);
-    pagination[0] = 1;
-    pagination[(pagination.length)-1]= totalPages;
+  if (!is_restToFill) {
+    for (let i = currentPage-maxPagesToShowOnEachSide; i < currentPage; i++) {
+      paginate.push(i);
+    }
+    paginate.push(currentPage);
+    for (let i = currentPage+1; i <= currentPage+maxPagesToShowOnEachSide; i++) {
+      paginate.push(i);
+    }
+  }
 
-    return pagination;
+
+  return paginate;
 }
+
+
+function paginatationSuiteMarker(paginate:number[], currentPage:number): ((number|string)[]) | number[] {
+    const length = paginate.length; 
+
+    const newPaginate: (number|string)[] =  paginate;
+    if (newPaginate.indexOf(currentPage) >=0 && newPaginate.indexOf(currentPage) <= 3) {
+        newPaginate[length-2] = '...';
+    }
+    if (newPaginate.indexOf(currentPage) > 3) {
+        newPaginate[1] = '...';
+        newPaginate[length-2] = '...';
+    }
+
+    if (newPaginate.indexOf(currentPage) <= (length-3) && newPaginate.indexOf(currentPage) >= length) {
+        newPaginate[1] = '...';
+    }
+
+    return newPaginate;
+}
+
+function generatePagination(totalPages: number, currentPage: number): (number|string)[] {
+    if (totalPages < 8) {
+        return generateNumeredPagination(totalPages, currentPage);
+    }
+    const paginate = generateNumeredPagination(totalPages, currentPage);
+    const filteredPaginate = paginatationSuiteMarker(paginate, currentPage);
+    filteredPaginate[0] = 1;
+    filteredPaginate[filteredPaginate.length-1] = totalPages;
+    
+    return filteredPaginate;
+}
+
 
 export default generatePagination;
