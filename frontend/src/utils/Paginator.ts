@@ -80,17 +80,25 @@ function paginatationSuiteMarker(paginate:number[], currentPage:number): ((numbe
     return newPaginate;
 }
 
-function generatePagination(totalPages: number, currentPage: number): (number|string)[] {
+function generatePaginationKey(totalPages: number, currentPage: number): { key: string, value: number | string }[]{
     if (totalPages < 8) {
-        return generateNumeredPagination(totalPages, currentPage);
+        // return generateNumeredPagination(totalPages, currentPage);
+        return generateNumeredPagination(totalPages, currentPage).map( (value, index) => ({
+          key: `key${index}`,
+          value: value
+        }));
     }
     const paginate = generateNumeredPagination(totalPages, currentPage);
     const filteredPaginate = paginatationSuiteMarker(paginate, currentPage);
     filteredPaginate[0] = 1;
     filteredPaginate[filteredPaginate.length-1] = totalPages;
     
-    return filteredPaginate;
+    const keyValueArray: { key: string, value: number | string }[] = filteredPaginate.map((value, index) => ({
+      key: `key${index}`,
+      value: value
+    }));
+    return keyValueArray;
 }
 
 
-export default generatePagination;
+export default generatePaginationKey;

@@ -34,7 +34,7 @@ function Plan () {
     ];
 
     const [search, setSearch] = useState<SearchState>({ state: false, data: "" });
-    const [batchSize, setBatchSize] = useState(1);
+    const [batchSize, setBatchSize] = useState(2);
 
     const handleResearch = (e:string) => {
         setSearch({ state: !!e.trim(), data: e })
