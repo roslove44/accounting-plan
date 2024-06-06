@@ -29,11 +29,14 @@ function PlanTableNav({totalLength, filteredLength, batchSize, searchState, tota
         }
     }
     
+    const startIndex = (currentPage - 1) * batchSize;
+    const endIndex = Math.min((startIndex + batchSize), totalLength);
+    
     return <>
         <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
             <span className="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                 Affichage de 
-                <span className="font-semibold text-gray-900 "> 1-10</span> sur
+                <span className="font-semibold text-gray-900 "> {startIndex +1 } - {endIndex}</span> sur
                 <span className="font-semibold text-gray-900 "> {searchState ? filteredLength :totalLength}</span> comptes
                 <span className={`font-semibold text-gray-900 ${searchState ? '': 'invisible'}`}> (filtrés sur {totalLength})  </span>
             </span>

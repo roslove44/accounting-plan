@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import SearchBar from "../Form/SearchBar";
 import ShowRangeSelect from "../Form/Select";
-import PlanTypeBox from "./PlanTypeBox";
 import PlanTable from "./PlanTable";
 import Account from "../../entity/Account";
 import filterDataInBatchesOf from "../../utils/FilterLogic";
@@ -32,10 +31,11 @@ function Plan () {
         { code: 504, name: "Utilities Expense", keywords: "electricity, water" },
         { code: 505, name: "Insurance Expense", keywords: "premiums, coverage" },
         { code: 506, name: "Advertising Expense", keywords: "marketing, promotions" },
+        { code: 507, name: "Advertising Expense", keywords: "marketing, promotions" },
     ];
 
     const [search, setSearch] = useState<SearchState>({ state: false, data: "" });
-    const [batchSize, setBatchSize] = useState(2);
+    const [batchSize, setBatchSize] = useState(10);
 
     const handleResearch = (e:string) => {
         setSearch({ state: !!e.trim(), data: e })
@@ -48,27 +48,19 @@ function Plan () {
     const accountsState = getAccountsState(accounts, accountToDisplay, batchSize, search.state);
     
     useEffect(() => {
-        // useEffect Pour surveiller les changements dans accountsState
-        // Les mises à jour de l'état (state) ne doivent pas être déclenchées de manière conditionnelle lors du rendu car cela entraîne des erreurs.
         if (accountsState.filteredLength === 0 && accountsState.totalPages > 0) {
             setCurrentPage(accountsState.totalPages);
         }
     }, [accountsState, setCurrentPage]);
-    console.log(accountsState);
     
 
     return <>
-        <div className="container mx-auto mt-10 px-10 lg:px-32 xl:px-64">
-            <div className="block p-6 bg-white border border-slate-200 rounded-lg shadow space-y-5">
-                <PlanTypeBox/>
-                <div className="w-full flex flex-col-reverse gap-2 sm:flex-row sm:gap-0 justify-between">
-                    <ShowRangeSelect onSelect={setBatchSize}/>
-                    <SearchBar search={search.data} onChange={handleResearch}></SearchBar>
-                </div>
-                <PlanTable accounts={accountToDisplay}/>
-                <PlanTableNav {...accountsState}/>
-            </div>
+        <div className="w-full flex flex-col-reverse gap-2 sm:flex-row sm:gap-0 justify-between">
+            <ShowRangeSelect onSelect={setBatchSize}/>
+            <SearchBar search={search.data} onChange={handleResearch}></SearchBar>
         </div>
+        <PlanTable accounts={accountToDisplay}/>
+        <PlanTableNav {...accountsState}/>
     </>
 }
 
