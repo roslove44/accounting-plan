@@ -10,6 +10,7 @@ export type AccountState = {
         batchSize : number,
         searchState : boolean,
         totalPages: number,
+        globalTotalLength : number|undefined
 };
 
 export default Account;

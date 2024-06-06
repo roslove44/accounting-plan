@@ -3,7 +3,7 @@ import { AccountState } from "../../entity/Account";
 import generatePaginationKey from "../../utils/Paginator";
 import { CurrentPageContext } from "../../hook/useCurrentPage";
 
-function PlanTableNav({totalLength, filteredLength, batchSize, searchState, totalPages}:AccountState) {
+function PlanTableNav({totalLength, filteredLength, batchSize, searchState, totalPages, globalTotalLength}:AccountState) {
     const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
 
     const paginationKeys = generatePaginationKey(totalPages, currentPage);
@@ -37,8 +37,8 @@ function PlanTableNav({totalLength, filteredLength, batchSize, searchState, tota
             <span className="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                 Affichage de 
                 <span className="font-semibold text-gray-900 "> {startIndex +1 } - {endIndex}</span> sur
-                <span className="font-semibold text-gray-900 "> {searchState ? filteredLength :totalLength}</span> comptes
-                <span className={`font-semibold text-gray-900 ${searchState ? '': 'invisible'}`}> (filtrés sur {totalLength})  </span>
+                <span className="font-semibold text-gray-900 "> {searchState ? filteredLength :totalLength}</span> compte{totalLength>1 ? 's' : ''}
+                <span className={`font-semibold text-gray-900 ${searchState ? '': 'invisible'}`}> (filtrés sur {globalTotalLength})  </span>
             </span>
             <div className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                 <PaginationButton page={'Prec.'} addedClassName={'ms-0 rounded-s-lg font-bold'} clickHandler={handlePageChange}/>

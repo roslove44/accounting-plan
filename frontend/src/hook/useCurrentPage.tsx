@@ -6,7 +6,7 @@ export const CurrentPageContext = createContext({
 });
 
 export function CurrentPageContextProvider({children}:CurrentPageContextProviderPros) {
-    const [currentPage, setCurrentPage] = useState(2);
+    const [currentPage, setCurrentPage] = useState(1);
 
     return <CurrentPageContext.Provider value={{currentPage, setCurrentPage}}>
         {children}

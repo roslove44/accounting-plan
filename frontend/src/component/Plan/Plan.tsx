@@ -36,22 +36,26 @@ function Plan () {
     const [search, setSearch] = useState<SearchState>({ state: false, data: "" });
     const [batchSize, setBatchSize] = useState(10);
     const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
+    const [filteredData, setFilteredData] = useState(accounts);
 
     const handleResearch = (e:string) => {
         setSearch({ state: !!e.trim(), data: e });        
     }
-    
-    const filteredData = filterDataBySearch(accounts, search);
-    console.log(filteredData);
+
+    useEffect(() => {
+        setFilteredData(filterDataBySearch(accounts, search));
+    }, [search])
 
     const accountToDisplay = filterDataInBatchesOf(filteredData, batchSize, currentPage);
-    const accountsState = getAccountsState(filteredData, accountToDisplay, batchSize, search.state);
+    const accountsState = getAccountsState(filteredData, accountToDisplay, batchSize, search.state, accounts.length);
     
     useEffect(() => {
         if (accountsState.filteredLength === 0 && accountsState.totalPages > 0) {
             setCurrentPage(accountsState.totalPages);
         }
     }, [accountsState, setCurrentPage]);
+    
+    console.log(accountsState);
     
 
     return <>
