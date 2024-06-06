@@ -1,9 +1,33 @@
+import { useContext } from "react";
 import { AccountState } from "../../entity/Account";
 import generatePaginationKey from "../../utils/Paginator";
+import { CurrentPageContext } from "../../hook/useCurrentPage";
 
 function PlanTableNav({totalLength, filteredLength, batchSize, searchState, totalPages}:AccountState) {
-    const paginationKeys = generatePaginationKey(totalPages, 2);
-    const currentPage = 1;
+    const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
+
+    const paginationKeys = generatePaginationKey(totalPages, currentPage);
+
+    const handlePageChange = (e:React.MouseEvent<HTMLButtonElement>) => {
+        const target = e.target as HTMLButtonElement;
+        const newValue = target.textContent; 
+        
+        if (newValue === '...') {
+            return;
+        }
+        if (newValue ==='Prec.') {
+            return currentPage<=1 ? '' : setCurrentPage(currentPage-1);
+        }
+
+        if (newValue === 'Suiv.') {
+            return currentPage<totalPages ? setCurrentPage(currentPage+1) : '';
+        }
+        
+        if (newValue && (typeof (parseInt(newValue)) === 'number')) {
+            setCurrentPage(parseInt(newValue));
+            return;
+        }
+    }
     
     return <>
         <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
@@ -14,17 +38,22 @@ function PlanTableNav({totalLength, filteredLength, batchSize, searchState, tota
                 <span className={`font-semibold text-gray-900 ${searchState ? '': 'invisible'}`}> (filtrés sur {totalLength})  </span>
             </span>
             <div className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                <PaginationButton page={'Prev'} addedClassName={'ms-0 rounded-s-lg font-bold'}/>
-                {paginationKeys.map(paginationKey => <PaginationButton key={paginationKey.key} page={paginationKey.value} isActive={paginationKey.value == currentPage}/>)}
-                <PaginationButton page={'Next'} addedClassName={'rounded-e-lg font-bold'}/>
+                <PaginationButton page={'Prec.'} addedClassName={'ms-0 rounded-s-lg font-bold'} clickHandler={handlePageChange}/>
+                {paginationKeys.map(
+                    paginationKey => 
+                    <PaginationButton key={paginationKey.key} page={paginationKey.value} isActive={paginationKey.value == currentPage} clickHandler={handlePageChange}
+                    />
+                    )
+                }
+                <PaginationButton page={'Suiv.'} addedClassName={'rounded-e-lg font-bold'} clickHandler={handlePageChange}/>
             </div>
         </nav>
     </>
 }
 
-function PaginationButton({page, addedClassName, isActive}:PaginationButtonProps) {    
+function PaginationButton({page, addedClassName, isActive, clickHandler}:PaginationButtonProps) {    
     const isDisabled = (page == "...");
-    return  <button className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 hover:bg-gray-100 hover:text-gray-700 transition-colors duration-300 ease-in ${isDisabled ? 'pointer-events-none': ''} ${isActive ? 'bg-blue-600 text-slate-100': 'bg-white text-gray-500'} ${addedClassName? addedClassName : ''}}`}>
+    return  <button onClick={(e) => clickHandler ? clickHandler(e): ''} className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 transition-colors duration-300 ease-in ${isDisabled ? 'pointer-events-none': ''} ${isActive ? 'bg-blue-600 text-slate-100': 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700 '} ${addedClassName? addedClassName : ''}`}>
                 {page}
             </button>
 }
@@ -33,6 +62,7 @@ type PaginationButtonProps = {
     page : string|number;
     addedClassName?: string,
     isActive?: boolean,
+    clickHandler? : (e:React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export default PlanTableNav;

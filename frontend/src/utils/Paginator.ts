@@ -60,27 +60,27 @@ function generateNumeredPagination(totalPages: number, currentPage: number):numb
   return paginate;
 }
 
-
-function paginatationSuiteMarker(paginate:number[], currentPage:number): ((number|string)[]) | number[] {
+function paginatationSuiteMarker(paginate:number[], currentPage:number, totalPages:number): ((number|string)[]) | number[] {
     const length = paginate.length; 
 
     const newPaginate: (number|string)[] =  paginate;
-    if (newPaginate.indexOf(currentPage) >=0 && newPaginate.indexOf(currentPage) <= 3) {
+    
+    if (newPaginate.indexOf(currentPage) >=0 && newPaginate.indexOf(currentPage) < 3) {
         newPaginate[length-2] = '...';
     }
-    if (newPaginate.indexOf(currentPage) > 3) {
+    if (newPaginate.indexOf(currentPage) >= 3 && currentPage <= (totalPages-3)) {
         newPaginate[1] = '...';
         newPaginate[length-2] = '...';
     }
 
-    if (newPaginate.indexOf(currentPage) <= (length-3) && newPaginate.indexOf(currentPage) >= length) {
+    if (currentPage > (totalPages-3) && currentPage <= totalPages) {
         newPaginate[1] = '...';
     }
 
     return newPaginate;
 }
 
-function generatePaginationKey(totalPages: number, currentPage: number): { key: string, value: number | string }[]{
+function generatePaginationKey(totalPages: number, currentPage: number): { key: string, value: (number|string) }[]{
     if (totalPages < 8) {
         // return generateNumeredPagination(totalPages, currentPage);
         return generateNumeredPagination(totalPages, currentPage).map( (value, index) => ({
@@ -89,11 +89,12 @@ function generatePaginationKey(totalPages: number, currentPage: number): { key: 
         }));
     }
     const paginate = generateNumeredPagination(totalPages, currentPage);
-    const filteredPaginate = paginatationSuiteMarker(paginate, currentPage);
+    
+    const filteredPaginate = paginatationSuiteMarker(paginate, currentPage, totalPages);
     filteredPaginate[0] = 1;
     filteredPaginate[filteredPaginate.length-1] = totalPages;
     
-    const keyValueArray: { key: string, value: number | string }[] = filteredPaginate.map((value, index) => ({
+    const keyValueArray: { key: string, value: (number|string) }[] = filteredPaginate.map((value, index) => ({
       key: `key${index}`,
       value: value
     }));

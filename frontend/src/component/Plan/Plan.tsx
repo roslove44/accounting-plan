@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SearchBar from "../Form/SearchBar";
 import ShowRangeSelect from "../Form/Select";
 import PlanTypeBox from "./PlanTypeBox";
@@ -8,6 +8,7 @@ import filterDataInBatchesOf from "../../utils/FilterLogic";
 import SearchState from "../../entity/SearchState";
 import getAccountsState from "../../utils/GetAccountsState";
 import PlanTableNav from "./PlanTableNav";
+import { CurrentPageContext } from "../../hook/useCurrentPage";
 
 function Plan () {
     const accounts: Account[] = [
@@ -39,10 +40,20 @@ function Plan () {
     const handleResearch = (e:string) => {
         setSearch({ state: !!e.trim(), data: e })
     }
+
     
-    const accountToDisplay = filterDataInBatchesOf(accounts, batchSize);
+    const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
+    const accountToDisplay = filterDataInBatchesOf(accounts, batchSize, currentPage);
 
     const accountsState = getAccountsState(accounts, accountToDisplay, batchSize, search.state);
+    
+    useEffect(() => {
+        // useEffect Pour surveiller les changements dans accountsState
+        // Les mises à jour de l'état (state) ne doivent pas être déclenchées de manière conditionnelle lors du rendu car cela entraîne des erreurs.
+        if (accountsState.filteredLength === 0 && accountsState.totalPages > 0) {
+            setCurrentPage(accountsState.totalPages);
+        }
+    }, [accountsState, setCurrentPage]);
     console.log(accountsState);
     
 
