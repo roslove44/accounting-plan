@@ -3,7 +3,7 @@ import SearchBar from "../Form/SearchBar";
 import ShowRangeSelect from "../Form/Select";
 import PlanTable from "./PlanTable";
 import Account from "../../entity/Account";
-import filterDataInBatchesOf from "../../utils/FilterLogic";
+import filterDataInBatchesOf, { filterDataBySearch } from "../../utils/FilterLogic";
 import SearchState from "../../entity/SearchState";
 import getAccountsState from "../../utils/GetAccountsState";
 import PlanTableNav from "./PlanTableNav";
@@ -33,19 +33,19 @@ function Plan () {
         { code: 506, name: "Advertising Expense", keywords: "marketing, promotions" },
         { code: 507, name: "Advertising Expense", keywords: "marketing, promotions" },
     ];
-
     const [search, setSearch] = useState<SearchState>({ state: false, data: "" });
     const [batchSize, setBatchSize] = useState(10);
+    const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
 
     const handleResearch = (e:string) => {
-        setSearch({ state: !!e.trim(), data: e })
+        setSearch({ state: !!e.trim(), data: e });        
     }
-
     
-    const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
-    const accountToDisplay = filterDataInBatchesOf(accounts, batchSize, currentPage);
+    const filteredData = filterDataBySearch(accounts, search);
+    console.log(filteredData);
 
-    const accountsState = getAccountsState(accounts, accountToDisplay, batchSize, search.state);
+    const accountToDisplay = filterDataInBatchesOf(filteredData, batchSize, currentPage);
+    const accountsState = getAccountsState(filteredData, accountToDisplay, batchSize, search.state);
     
     useEffect(() => {
         if (accountsState.filteredLength === 0 && accountsState.totalPages > 0) {
