@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account
@@ -14,12 +15,15 @@ class Account
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['front'])]
     private ?int $code = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['front'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['front'])]
     private ?string $keywords = null;
 
     #[ORM\Column]
