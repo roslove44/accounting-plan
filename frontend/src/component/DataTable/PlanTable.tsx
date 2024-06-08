@@ -17,7 +17,7 @@ function PlanTable({accounts}:PlanTableProps){
                     </thead>
                     <tbody>
                         { accounts.length > 0 && accounts.map(account => <AccountRow {...account}  key={account.code}/> )}
-                        { accounts.length == 0 && <tr><td colSpan={2} className="p-3"><Alert type="info">Aucune donnée à afficher</Alert></td></tr>}
+                        { accounts.length == 0 && <tr><td colSpan={2} className="p-3"><Alert type="dark">Aucune donnée à affichier</Alert></td></tr>}
                     </tbody>
                 </table>
             </div>

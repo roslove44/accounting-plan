@@ -34,7 +34,7 @@ h6 {
 }
 
 .planTypeBtn {
-  @apply px-4 py-2 text-sm font-medium text-gray-900 bg-white border transition-colors
+  @apply px-4 py-2 text-sm font-medium text-gray-900 bg-white border transition-colors duration-300 ease-out
   border-gray-200 rounded-lg hover:bg-slate-100 hover:text-blue-600 focus:z-10 focus:text-blue-600;
 }
 

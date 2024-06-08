@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 
-function useFetch(url:string, options:RequestInit) {
+function useFetch(url:string, options?:RequestInit) {
+    if (options == null || options==undefined) {
+        options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    }
 
     const [errors, setErrors] = useState<string|null>(null);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
             fetch(url, {
@@ -16,17 +25,18 @@ function useFetch(url:string, options:RequestInit) {
         .then(response => {
             if (!response.ok) {
                 setErrors(response.status.toString());
-                setData([]);
+                setData(null);
+                setLoading(false);
                 throw new Error(response.statusText);
             }
             return response.json()
         })
-        .then(data => {setData(data)})
-        .catch(error => {setErrors(error); setData([])})
+        .then(data => {setData(data); setLoading(false);})
+        .catch(error => {setErrors(error); setData(null);setLoading(false);})
     }, []);
 
     return {
-        errors, data
+        errors, data, loading
     }
 }
 
