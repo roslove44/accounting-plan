@@ -8,7 +8,6 @@ function PlanSwitcher({currentPlan, changeHandler}:PlanSwitcherPropsType) {
                 <ButtonPlanType is_active={currentPlan == 'planByClass'} onClickHandler={()=>changeHandler('planByClass')}>Plan par classe</ButtonPlanType>
             </div>
         </div>
-        <h2 className="text-center text-xl/normal font-bold my-3">Plan Comptable SYSCOHADA Révisé</h2>
     </>
 }
 

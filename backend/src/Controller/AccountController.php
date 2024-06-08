@@ -20,10 +20,35 @@ class AccountController extends AbstractController
         return new JsonResponse($jsonAccountsList, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/account/{code}', name: 'app_account_show', methods: ['GET'])]
-    public function show(Account $account, SerializerInterface $serializer): JsonResponse
+    #[Route('/api/account/byGroup/', name: 'app_account_byGroup', methods: ['GET'])]
+    public function byGroup(SerializerInterface $serializer, AccountRepository $accountRepository): JsonResponse
     {
-        $jsonAccount = $serializer->serialize($account, 'json', ['groups' => 'front']);
-        return new JsonResponse($jsonAccount, Response::HTTP_OK, [], true);
+        $accounts = $accountRepository->findAll();
+        $groupedAccounts = [];
+        foreach ($accounts as $account) {
+            $groupedAccounts[$account->getClassGroup()][] = [
+                'code' => $account->getCode(),
+                'name' => $account->getName(),
+                'keywords' => $account->getKeywords()
+            ];
+        }
+        $jsonAccountsList = $serializer->serialize($groupedAccounts, 'json');
+        return new JsonResponse($jsonAccountsList, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/api/account/byClass/', name: 'app_account_byClass', methods: ['GET'])]
+    public function byClass(SerializerInterface $serializer, AccountRepository $accountRepository): JsonResponse
+    {
+        $accounts = $accountRepository->findAll();
+        $groupedAccounts = [];
+        foreach ($accounts as $account) {
+            $groupedAccounts[$account->getClass()][] = [
+                'code' => $account->getCode(),
+                'name' => $account->getName(),
+                'keywords' => $account->getKeywords()
+            ];
+        }
+        $jsonAccountsList = $serializer->serialize($groupedAccounts, 'json');
+        return new JsonResponse($jsonAccountsList, Response::HTTP_OK, [], true);
     }
 }

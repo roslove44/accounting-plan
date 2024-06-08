@@ -4,17 +4,16 @@ import AccountingPlanTable from "./_partials/AccountingPlanTable";
 import Alert from "../Alerts/Alerts";
 import useFetch from "../../hook/useFetch";
 
-function CompletePlan({url}:CompletePlanPropsType) {
+function PlanByClass({url}:PlanByClassPropsType) {
     const {data, loading} = useFetch(url);
-
     if (loading) {
         return <Alert type="info">En cours de chargement</Alert>
     }
-    const accounts = data;
     
+    const accounts = data;
+
     return <>
         <CurrentPageContextProvider>
-            <h2 className="text-center text-xl/normal font-bold my-3">Plan Comptable SYSCOHADA Révisé</h2>
             <ErrorBoundary fallback={<Alert type='warning'>Erreur lors de la récupération des données.</Alert>}>
                 <AccountingPlanTable accounts={accounts? accounts:[]}/>
             </ErrorBoundary>
@@ -22,8 +21,8 @@ function CompletePlan({url}:CompletePlanPropsType) {
     </>
 }
 
-type CompletePlanPropsType = {
+type PlanByClassPropsType = {
     url : string,
 }
 
-export default CompletePlan;
+export default PlanByClass;

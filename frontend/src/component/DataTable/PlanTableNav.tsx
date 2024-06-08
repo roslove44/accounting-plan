@@ -5,9 +5,7 @@ import { CurrentPageContext } from "../../hook/useCurrentPage";
 
 function PlanTableNav({filteredLength, batchSize, searchState, totalPages, globalTotalLength}:AccountState) {
     const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
-
-    const paginationKeys = generatePaginationKey(totalPages, currentPage);
-
+    
     const handlePageChange = (e:React.MouseEvent<HTMLButtonElement>) => {   
         const target = e.target as HTMLButtonElement;
         const newValue = target.textContent; 
@@ -28,6 +26,8 @@ function PlanTableNav({filteredLength, batchSize, searchState, totalPages, globa
             return;
         }
     }
+
+    const paginationKeys = generatePaginationKey(totalPages, currentPage);
     
     const startIndex = (currentPage - 1) * batchSize;
     const endIndex = Math.min((startIndex + batchSize), filteredLength);

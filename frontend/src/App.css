@@ -34,10 +34,17 @@ h6 {
 }
 
 .planTypeBtn {
-  @apply px-4 py-2 text-sm font-medium text-gray-900 bg-white border transition-colors duration-300 ease-out
-  border-gray-200 rounded-lg hover:bg-slate-100 hover:text-blue-600 focus:z-10 focus:text-blue-600;
+  @apply px-4 py-2 text-sm font-medium text-gray-900 bg-white border transition-colors duration-300 ease-out border-gray-200 rounded-lg hover:bg-slate-100 hover:text-blue-600 focus:z-10 focus:text-blue-600;
 }
 
 .planTypeBtn.active {
   @apply bg-blue-600 text-slate-100;
+}
+
+.planTypeBtnSmall {
+  @apply px-2 py-1 text-sm font-medium text-gray-900 bg-white border transition-colors duration-300 ease-out border-gray-200 rounded-lg hover:bg-slate-100 hover:text-blue-600 focus:z-10 focus:text-blue-600;
+}
+
+.planTypeBtnSmall.active {
+  @apply bg-blue-600/60 text-slate-100;
 }

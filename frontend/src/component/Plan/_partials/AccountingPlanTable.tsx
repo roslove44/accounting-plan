@@ -7,18 +7,19 @@ import filterDataInBatchesOf, { filterDataBySearch } from "../../../utils/Filter
 import SearchState from "../../../entity/SearchState";
 import getAccountsState from "../../../utils/GetAccountsState";
 import PlanTableNav from "../../DataTable/PlanTableNav";
-import { CurrentPageContext } from "../../../hook/useCurrentPage";
+import { CurrentPageContext} from "../../../hook/useCurrentPage";
+import usePrevious from "../../../hook/usePrevious";
 
-function AccountingPlan ({accounts}:AccountingPlanPropsType) {
+function AccountingPlanTable ({accounts}:AccountingPlanPropsType) {
     const [search, setSearch] = useState<SearchState>({ state: false, data: "" });
     const [batchSize, setBatchSize] = useState(10);
     const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
     const [filteredData, setFilteredData] = useState(accounts);
+    const previousBatchSize = usePrevious(batchSize);
 
     const handleResearch = (e:string) => {
         setSearch({ state: !!e.trim(), data: e });        
     }
-
     useEffect(() => {
         setFilteredData(filterDataBySearch(accounts, search));
     }, [search, accounts])
@@ -27,12 +28,15 @@ function AccountingPlan ({accounts}:AccountingPlanPropsType) {
     const accountsState = getAccountsState(filteredData, batchSize, search.state, accounts.length);
     
     useEffect(() => {
-        if (accountsState.filteredLength === 0 && accountsState.totalPages > 0) {
-            setCurrentPage(accountsState.totalPages);
+        if (previousBatchSize && previousBatchSize!==batchSize) {
+            const currentOffset = currentPage*previousBatchSize;
+            const newPage = Math.floor((currentOffset/batchSize));
+            const totalPages = Math.ceil((filteredData.length)/batchSize);
+            setCurrentPage(Math.max(newPage>=totalPages ? totalPages-1: newPage, 1));
         }
-    }, [accountsState, setCurrentPage]);
+    }, [batchSize, previousBatchSize, filteredData]);
     
-
+    console.log(batchSize,previousBatchSize,  currentPage)
     return <>
         <div className="w-full flex flex-col-reverse gap-2 sm:flex-row sm:gap-0 justify-between">
             <ShowRangeSelect onSelect={setBatchSize}/>
@@ -46,4 +50,4 @@ function AccountingPlan ({accounts}:AccountingPlanPropsType) {
 type AccountingPlanPropsType = {
     accounts : Account[]|[]
 }
-export default AccountingPlan;
+export default AccountingPlanTable;
