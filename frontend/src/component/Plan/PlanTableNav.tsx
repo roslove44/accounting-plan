@@ -3,12 +3,12 @@ import { AccountState } from "../../entity/Account";
 import generatePaginationKey from "../../utils/Paginator";
 import { CurrentPageContext } from "../../hook/useCurrentPage";
 
-function PlanTableNav({totalLength, filteredLength, batchSize, searchState, totalPages, globalTotalLength}:AccountState) {
+function PlanTableNav({filteredLength, batchSize, searchState, totalPages, globalTotalLength}:AccountState) {
     const {currentPage, setCurrentPage} = useContext(CurrentPageContext);
 
     const paginationKeys = generatePaginationKey(totalPages, currentPage);
 
-    const handlePageChange = (e:React.MouseEvent<HTMLButtonElement>) => {
+    const handlePageChange = (e:React.MouseEvent<HTMLButtonElement>) => {   
         const target = e.target as HTMLButtonElement;
         const newValue = target.textContent; 
         
@@ -30,14 +30,14 @@ function PlanTableNav({totalLength, filteredLength, batchSize, searchState, tota
     }
     
     const startIndex = (currentPage - 1) * batchSize;
-    const endIndex = Math.min((startIndex + batchSize), totalLength);
+    const endIndex = Math.min((startIndex + batchSize), filteredLength);
     
     return <>
         <nav className="flex items-center justify-center flex-column flex-wrap md:flex-row md:justify-between pt-4" aria-label="Table navigation">
             <span className="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                 Affichage de 
                 <span className="font-semibold text-gray-900 "> {(globalTotalLength && globalTotalLength>0) ? startIndex +1 : 0 } - {endIndex}</span> sur
-                <span className="font-semibold text-gray-900 "> {searchState ? filteredLength :totalLength}</span> compte{totalLength>1 ? 's' : ''}
+                <span className="font-semibold text-gray-900 "> {filteredLength}</span> compte{filteredLength>1 ? 's' : ''}
                 <span className={`font-semibold text-gray-900 ${searchState ? '': 'invisible'}`}> (filtrés sur {globalTotalLength})  </span>
             </span>
             <div className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">

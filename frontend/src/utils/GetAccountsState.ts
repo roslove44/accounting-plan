@@ -1,25 +1,13 @@
 import Account, { AccountState } from "../entity/Account";
 
-function getAccountsState (unfilteredAccounts: Account[], filteredAccounts: Account[], batchSize:number, searchState:boolean, globalTotalLength:number|undefined):AccountState {
-    const state =  {
-        totalLength: unfilteredAccounts.length,
-        filteredLength: filteredAccounts.length,
+function getAccountsState (filteredAccounts: Account[], batchSize:number, searchState:boolean, globalTotalLength:number):AccountState {
+    return {
+        filteredLength : filteredAccounts.length,
+        totalPages : Math.ceil((filteredAccounts.length)/batchSize),
         batchSize : batchSize,
-        searchState : searchState,
-        totalPages : 0,
-        globalTotalLength : globalTotalLength
+        searchState: searchState,
+        globalTotalLength : globalTotalLength,
     }
-
-    let accountLength = state.totalLength;
-    if (searchState) {
-        accountLength = state.filteredLength;
-    }
-
-    const totalPages = Math.ceil(accountLength / batchSize);
-
-    state.totalPages = totalPages;
-
-    return state;
 }
 
 export default getAccountsState;

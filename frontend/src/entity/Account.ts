@@ -5,12 +5,11 @@ type Account = {
 };
 
 export type AccountState = {
-        totalLength: number,
-        filteredLength: number,
-        batchSize : number,
-        searchState : boolean,
-        totalPages: number,
-        globalTotalLength : number|undefined
+    filteredLength: number,
+    batchSize : number,
+    searchState : boolean,
+    totalPages: number,
+    globalTotalLength : number
 };
 
 export default Account;

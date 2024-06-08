@@ -24,7 +24,7 @@ function Plan ({accounts}:PlanPropsType) {
     }, [search, accounts])
 
     const accountToDisplay = filterDataInBatchesOf(filteredData, batchSize, currentPage);
-    const accountsState = getAccountsState(filteredData, accountToDisplay, batchSize, search.state, accounts.length);
+    const accountsState = getAccountsState(filteredData, batchSize, search.state, accounts.length);
     
     useEffect(() => {
         if (accountsState.filteredLength === 0 && accountsState.totalPages > 0) {
