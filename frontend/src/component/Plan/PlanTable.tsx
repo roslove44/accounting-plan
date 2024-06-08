@@ -1,4 +1,5 @@
 import Account from "../../entity/Account";
+import Alert from "../Alerts/Alerts";
 
 function PlanTable({accounts}:PlanTableProps){
     return <>
@@ -15,7 +16,8 @@ function PlanTable({accounts}:PlanTableProps){
                         </tr>
                     </thead>
                     <tbody>
-                        {accounts.map(account => <AccountRow {...account}  key={account.code}/> )}
+                        { accounts.length > 0 && accounts.map(account => <AccountRow {...account}  key={account.code}/> )}
+                        { accounts.length == 0 && <tr><td colSpan={2} className="p-3"><Alert type="info">Aucune donnée à afficher</Alert></td></tr>}
                     </tbody>
                 </table>
             </div>

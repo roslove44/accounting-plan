@@ -15,12 +15,14 @@ function useFetch(url:string, options:RequestInit) {
         })
         .then(response => {
             if (!response.ok) {
-                setErrors(response.statusText)
+                setErrors(response.status.toString());
+                setData([]);
+                throw new Error(response.statusText);
             }
             return response.json()
         })
         .then(data => {setData(data)})
-        .catch(error => {setErrors(error)})
+        .catch(error => {setErrors(error); setData([])})
     }, []);
 
     return {
