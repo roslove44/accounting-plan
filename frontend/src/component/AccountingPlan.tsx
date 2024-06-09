@@ -30,7 +30,7 @@ function PlanController({currentPlan}:PlanControllerProps){
 	}
 
 	if (currentPlan === 'planByClass') {
-		const url = api_base_url+'/api/account';
+		const url = api_base_url+'/api/account/byClass';
 		return <PlanByClass url={url}/> 
 	}
 }

@@ -34,9 +34,9 @@ function AccountingPlanTable ({accounts}:AccountingPlanPropsType) {
             const totalPages = Math.ceil((filteredData.length)/batchSize);
             setCurrentPage(Math.max(newPage>=totalPages ? totalPages-1: newPage, 1));
         }
-    }, [batchSize, previousBatchSize, filteredData]);
+    }, [batchSize, previousBatchSize, filteredData.length]);
     
-    console.log(batchSize,previousBatchSize,  currentPage)
+
     return <>
         <div className="w-full flex flex-col-reverse gap-2 sm:flex-row sm:gap-0 justify-between">
             <ShowRangeSelect onSelect={setBatchSize}/>

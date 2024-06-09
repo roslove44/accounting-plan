@@ -15,6 +15,7 @@ function useFetch(url:string, options?:RequestInit) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+         let isMounted = true;
             fetch(url, {
             ...options,
             headers: {
@@ -31,9 +32,22 @@ function useFetch(url:string, options?:RequestInit) {
             }
             return response.json()
         })
-        .then(data => {setData(data); setLoading(false);})
-        .catch(error => {setErrors(error); setData(null);setLoading(false);})
-    }, []);
+        .then(data => {
+            if (isMounted) {
+                setData(data); 
+                setLoading(false); 
+            }
+        })
+        .catch(error => {
+            if (isMounted) {
+                setErrors(error); setData(null);setLoading(false);
+            }
+        })
+
+        return ()=>{
+            isMounted = false;
+        }
+    }, [url]);
 
     return {
         errors, data, loading
