@@ -1,10 +1,10 @@
 import { ErrorBoundary } from "react-error-boundary";
 import AccountingPlanTable from "./_partials/AccountingPlanTable";
 import Alert from "../Alerts/Alerts";
-import useFetch from "../../hook/useFetch";
+import useFetch from "../../hooks/useFetch";
 import PlanByClassSwitcher from "./_partials/PlanByClassSwitcher";
 import { useContext, useState } from "react";
-import { CurrentPageContext } from "../../hook/useCurrentPage";
+import { CurrentPageContext } from "../../hooks/useCurrentPage";
 
 function PlanByClass({url}:PlanByClassPropsType) {
     const {data, loading} = useFetch(url);
@@ -33,6 +33,7 @@ function PlanByClass({url}:PlanByClassPropsType) {
     }
 
     return <>
+        <h2 className="text-center text-xl/normal font-bold my-3">Plan par Classe</h2>
         <PlanByClassSwitcher currentClass={currentClass} changeHandler={changeHandler}>{accountClass[currentClass as keyof typeof accountClass]}</PlanByClassSwitcher>
         <ErrorBoundary fallback={<Alert type='warning'>Erreur lors du traitement des données.</Alert>}>
             <AccountingPlanTable accounts={activeAccounts}/>

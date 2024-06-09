@@ -1,8 +1,8 @@
 import { ErrorBoundary } from "react-error-boundary";
-import { CurrentPageContext} from "../../hook/useCurrentPage";
+import { CurrentPageContext} from "../../hooks/useCurrentPage";
 import AccountingPlanTable from "./_partials/AccountingPlanTable";
 import Alert from "../Alerts/Alerts";
-import useFetch from "../../hook/useFetch";
+import useFetch from "../../hooks/useFetch";
 import { useContext, useState } from "react";
 import PlanByGroupSwitcher from "./_partials/PlanByGroupSwitcher";
 

@@ -1,8 +1,8 @@
 import { ErrorBoundary } from "react-error-boundary";
-import { CurrentPageContextProvider } from "../../hook/useCurrentPage";
+import { CurrentPageContextProvider } from "../../hooks/useCurrentPage";
 import AccountingPlanTable from "./_partials/AccountingPlanTable";
 import Alert from "../Alerts/Alerts";
-import useFetch from "../../hook/useFetch";
+import useFetch from "../../hooks/useFetch";
 
 function CompletePlan({url}:CompletePlanPropsType) {
     const {data, loading} = useFetch(url);

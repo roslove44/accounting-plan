@@ -1,8 +1,8 @@
 
 import './App.css'
-import AccountingPlan from './component/AccountingPlan'
-import { Header } from './component/Header'
-import { CurrentPageContextProvider } from './hook/useCurrentPage'
+import AccountingPlan from './components/AccountingPlan'
+import { Header } from './components/Header'
+import { CurrentPageContextProvider } from './hooks/useCurrentPage'
 
 function App() {
   

@@ -7,8 +7,8 @@ import filterDataInBatchesOf, { filterDataBySearch } from "../../../utils/Filter
 import SearchState from "../../../entity/SearchState";
 import getAccountsState from "../../../utils/GetAccountsState";
 import PlanTableNav from "../../DataTable/PlanTableNav";
-import { CurrentPageContext} from "../../../hook/useCurrentPage";
-import usePrevious from "../../../hook/usePrevious";
+import { CurrentPageContext} from "../../../hooks/useCurrentPage";
+import usePrevious from "../../../hooks/usePrevious";
 
 function AccountingPlanTable ({accounts}:AccountingPlanPropsType) {
     const [search, setSearch] = useState<SearchState>({ state: false, data: "" });

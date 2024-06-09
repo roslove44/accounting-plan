@@ -2,7 +2,7 @@ function PlanByClassSwitcher({currentClass, changeHandler, children}:PlanSwitche
     
     return <>
         <div className="planTypeBox w-fit mx-auto">
-            <div className="inline-flex flex-row flex-wrap gap-2 md:gap-1 rounded-md shadow-sm" role="group">
+            <div className="inline-flex justify-center flex-row flex-wrap gap-2 md:gap-1 rounded-md shadow-sm" role="group">
                 <ButtonPlanType is_active={currentClass == '1'} onClickHandler={()=> changeHandler('1')}>Classe 1</ButtonPlanType>
                 <ButtonPlanType is_active={currentClass == '2'} onClickHandler={()=>changeHandler('2')}>Classe 2</ButtonPlanType>
                 <ButtonPlanType is_active={currentClass == '3'} onClickHandler={()=>changeHandler('3')}>Classe 3</ButtonPlanType>
